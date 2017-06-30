@@ -1,15 +1,16 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.khantilchoksi.myandroidlibrary.MainLibraryActivity;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.EndpointsAsyncTaskListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,14 @@ public class MainActivity extends AppCompatActivity {
         //libraryIntent.putExtra("joke",new MyJokes().getJoke());
         //this.startActivity(libraryIntent);
 
-        new EndpointsAsyncTask().execute(this);
+        new EndpointsAsyncTask().execute();
     }
 
 
+    @Override
+    public void onComplete(String jokeString, Exception e) {
+        Intent libraryIntent = new Intent(this, MainLibraryActivity.class);
+        libraryIntent.putExtra("joke",jokeString);
+        this.startActivity(libraryIntent);
+    }
 }

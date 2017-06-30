@@ -1,10 +1,8 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.example.khantilchoksi.myandroidlibrary.MainLibraryActivity;
 import com.example.khantilchoksi.myapplication.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -17,19 +15,21 @@ import java.io.IOException;
  * Created by khantilchoksi on 29/06/17.
  */
 
-public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+    private EndpointsAsyncTaskListener mListener = null;
+    private Exception mError = null;
     private static MyApi myApiService = null;
     private Context context;
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected String doInBackground(Void... params) {
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     // options for running against local devappserver
                     // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
-                    .setRootUrl("http://192.168.0.101:8080/_ah/api/")
+                    .setRootUrl("http://192.168.0.103:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -41,21 +41,33 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
             myApiService = builder.build();
         }
 
-        context = params[0];
+        //context = params[0];
 
 
         try {
             return myApiService.getJokeFromServer().execute().getData();
         } catch (IOException e) {
+            mError = e;
             return e.getMessage();
         }
     }
 
+    public EndpointsAsyncTask setListener(EndpointsAsyncTaskListener listener) {
+        this.mListener = listener;
+        return this;
+    }
+
     @Override
     protected void onPostExecute(String result) {
-        Intent libraryIntent = new Intent(context, MainLibraryActivity.class);
-        libraryIntent.putExtra("joke",result);
-        context.startActivity(libraryIntent);
+
+        if (this.mListener != null)
+            this.mListener.onComplete(result, mError);
+
+
         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+    }
+
+    public static interface EndpointsAsyncTaskListener {
+        public void onComplete(String jokeString, Exception e);
     }
 }
