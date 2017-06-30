@@ -1,13 +1,12 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import com.example.MyJokes;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +41,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        Toast.makeText(this, new MyJokes().getJoke(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, new MyJokes().getJoke(), Toast.LENGTH_SHORT).show();
+
+        //Intent libraryIntent = new Intent(this, MainLibraryActivity.class);
+        //libraryIntent.putExtra("joke",new MyJokes().getJoke());
+        //this.startActivity(libraryIntent);
+
+        new EndpointsAsyncTask().execute(this);
     }
 
 

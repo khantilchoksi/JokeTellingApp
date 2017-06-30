@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/javajokes" />
+            <option value="$PROJECT_DIR$/myandroidlibrary" />
+            <option value="$PROJECT_DIR$/mybackend" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
