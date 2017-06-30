@@ -1,17 +1,14 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-import com.example.khantilchoksi.myandroidlibrary.MainLibraryActivity;
 
 
-public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.EndpointsAsyncTaskListener{
+public class MainActivity extends AppCompatActivity{
 
+    private static String LOG_TAG = MainActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,21 +38,4 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
         return super.onOptionsItemSelected(item);
     }
 
-    public void tellJoke(View view) {
-        //Toast.makeText(this, new MyJokes().getJoke(), Toast.LENGTH_SHORT).show();
-
-        //Intent libraryIntent = new Intent(this, MainLibraryActivity.class);
-        //libraryIntent.putExtra("joke",new MyJokes().getJoke());
-        //this.startActivity(libraryIntent);
-
-        new EndpointsAsyncTask().execute();
-    }
-
-
-    @Override
-    public void onComplete(String jokeString, Exception e) {
-        Intent libraryIntent = new Intent(this, MainLibraryActivity.class);
-        libraryIntent.putExtra("joke",jokeString);
-        this.startActivity(libraryIntent);
-    }
 }

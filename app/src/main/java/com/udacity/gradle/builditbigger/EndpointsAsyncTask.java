@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.khantilchoksi.myapplication.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -16,6 +17,7 @@ import java.io.IOException;
  */
 
 public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
+    private static String LOG_TAG = EndpointsAsyncTask.class.getSimpleName();
     private EndpointsAsyncTaskListener mListener = null;
     private Exception mError = null;
     private static MyApi myApiService = null;
@@ -29,7 +31,7 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
                     // options for running against local devappserver
                     // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
-                    .setRootUrl("http://192.168.0.103:8080/_ah/api/")
+                    .setRootUrl("http://192.168.0.102:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -59,9 +61,12 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
-        if (this.mListener != null)
+        Log.d(LOG_TAG,"Received Result on post execute: "+result);
+        if (this.mListener != null){
+            Log.d(LOG_TAG,"mListener is not null.");
             this.mListener.onComplete(result, mError);
+        }
+
 
 
         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
