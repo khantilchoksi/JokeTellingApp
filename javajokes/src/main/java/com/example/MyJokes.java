@@ -6,4 +6,8 @@ public class MyJokes {
         return "This is totally a funny joke from java library!";
     }
 
+    /*public String getJoke() {
+        return null;
+    }*/
+
 }
