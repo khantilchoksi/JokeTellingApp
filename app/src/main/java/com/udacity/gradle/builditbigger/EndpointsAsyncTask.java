@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -22,7 +23,14 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private Exception mError = null;
     private static MyApi myApiService = null;
     private Context context;
+    private ProgressDialog mProgressDialog = null;
 
+    public EndpointsAsyncTask(ProgressDialog progressDialog) {
+        this.mProgressDialog = progressDialog;
+    }
+
+    public EndpointsAsyncTask() {
+    }
     @Override
     protected String doInBackground(Void... params) {
         if(myApiService == null) {  // Only do this once
@@ -70,6 +78,15 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
 
         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onCancelled() {
+        if(mProgressDialog != null){
+            this.mProgressDialog.dismiss();
+        }
+
+        super.onCancelled();
     }
 
     public static interface EndpointsAsyncTaskListener {
