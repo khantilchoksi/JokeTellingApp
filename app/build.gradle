@@ -19,6 +19,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    productFlavors {
+        paid {
+            applicationId "com.udacity.gradle.builditbigger.paid"
+        }
+
+        free {
+            applicationId "com.udacity.gradle.builitbigger.free"
+        }
+    }
+    sourceSets {
+        free { res.srcDirs = ['src/free/res', 'src/free/res/'] }
+        paid {
+            res.srcDirs = ['src/paid/res', 'src/paid/res/']
+            java.srcDirs = ['src/paid/java', 'src/paid/java/']
+        }
+    }
 }
 
 dependencies {
